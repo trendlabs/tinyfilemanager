@@ -1,0 +1,44 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  annotations:
+    pipeline.openshift.io/started-by: developer
+  name: tinyfilemanager-git-mgaj7z
+  namespace: tinyfilemanager
+  labels:
+    app.kubernetes.io/instance: tinyfilemanager-git
+    app.kubernetes.io/name: tinyfilemanager-git
+    pipeline.openshift.io/strategy: docker
+    pipeline.openshift.io/type: kubernetes
+    tekton.dev/pipeline: tinyfilemanager-git
+spec:
+  params:
+    - name: APP_NAME
+      value: tinyfilemanager-git
+    - name: GIT_REPO
+      value: 'https://github.com/trendlabs/tinyfilemanager.git'
+    - name: GIT_REVISION
+      value: master
+    - name: IMAGE_NAME
+      value: >-
+        image-registry.openshift-image-registry.svc:5000/tinyfilemanager/tinyfilemanager-git
+    - name: PATH_CONTEXT
+      value: .
+  pipelineRef:
+    name: tinyfilemanager-git
+  serviceAccountName: pipeline
+  timeout: 1h0m0s
+  workspaces:
+    - name: workspace
+      volumeClaimTemplate:
+        metadata:
+          creationTimestamp: null
+          labels:
+            tekton.dev/pipeline: tinyfilemanager-git
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 1Gi
+        status: {}

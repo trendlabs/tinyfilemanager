@@ -1,0 +1,48 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerTemplate
+metadata:
+  name: tinyfilemanager-trigger-pipeline-template
+spec:
+  params:
+  - name: gitrepository.url  
+  - name: gitrevision
+  resourcetemplates:
+  - apiVersion: tekton.dev/v1beta1
+    kind: PipelineRun
+    metadata:
+      generateName: tinyfilemanager-git-run-pr-tr-
+      labels:
+        app.kubernetes.io/instance: tinyfilemanager-git
+        app.kubernetes.io/name: tinyfilemanager-git
+        pipeline.openshift.io/strategy: docker
+        pipeline.openshift.io/type: kubernetes
+        tekton.dev/pipeline: tinyfilemanager-git
+    spec:
+      serviceAccountName: pipeline
+      pipelineRef:
+        name: tinyfilemanager-git     
+      params:        
+        - name: APP_NAME
+          value: tinyfilemanager-git
+        - name: GIT_REPO
+          value: $(tt.params.gitrepository.url)       
+        - name: GIT_REVISION
+          value: $(tt.params.gitrevision)
+        - name: IMAGE_NAME
+          value: >-
+            image-registry.openshift-image-registry.svc:5000/tinyfilemanager/tinyfilemanager-git
+        - name: PATH_CONTEXT
+          value: .
+      workspaces:
+      - name: workspace
+        volumeClaimTemplate:
+          metadata:
+            creationTimestamp: null
+            labels:
+              tekton.dev/pipeline: tinyfilemanager-git
+          spec:
+            accessModes:
+              - ReadWriteOnce
+            resources:
+              requests:
+                storage: 1Gi
