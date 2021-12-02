@@ -7,6 +7,6 @@ spec:
   triggers:
     - name: github-listener
       bindings:
-        - ref: tinyfilemanager-pipeline-binding
+        - ref: tinyfilemanager-tekton-trigger-binding
       template:
-        ref: tinyfilemanager-trigger-pipeline-template
+        ref: tinyfilemanager-tekton-trigger-template

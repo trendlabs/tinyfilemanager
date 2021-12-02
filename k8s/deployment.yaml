@@ -1,0 +1,33 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: tinyfilemanager-tekton
+  labels:
+    app: tinyfilemanager-tekton
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tinyfilemanager-tekton
+  template:
+    metadata:    
+      labels:
+        app: tinyfilemanager-tekton
+    spec:
+      volumes:
+        - name: tinyfilemanager-tekton-data
+          persistentVolumeClaim:
+            claimName: tinyfilemanager-tekton-data
+      containers:
+        - name: tinyfilemanager-tekton
+          image: typn1979/demo-app:v1
+          volumeMounts:
+            - name: tinyfilemanager-data
+              mountPath: /var/www/html/data      
+          imagePullPolicy: Always
+      restartPolicy: Always      
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%

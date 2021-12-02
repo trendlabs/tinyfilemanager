@@ -1,0 +1,17 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: tinyfilemanager-tekton-svc 
+  labels:
+    app: tinyfilemanager-tekton-svc
+spec:
+  ipFamilies:
+    - IPv4
+  ports:
+    - name: 8080-tcp
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: ClusterIP
+  selector:
+    app: tinyfilemanager-tekton
