@@ -1,0 +1,30 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: tinyfilemanager-build-and-deploy-6qor4a
+  labels:
+    tekton.dev/pipeline: tinyfilemanager-build-and-deploy
+spec:
+  params:
+    - name: deployment-name
+      value: tinyfilemanager-tekton
+    - name: git-url
+      value: 'https://github.com/trendlabs/tinyfilemanager.git'
+    - name: git-revision
+      value: master
+    - name: IMAGE
+      value: >-
+        image-registry.openshift-image-registry.svc:5000/tinyfilemanager-tekton/tinyfilemanager-tekton
+  pipelineRef:
+    name: tinyfilemanager-build-and-deploy
+  serviceAccountName: pipeline
+  workspaces:
+    - name: shared-workspace
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 2Gi
+          volumeMode: Filesystem

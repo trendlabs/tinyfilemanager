@@ -20,9 +20,9 @@ spec:
             claimName: tinyfilemanager-tekton-data
       containers:
         - name: tinyfilemanager-tekton
-          image: image-registry.openshift-image-registry.svc:5000/tinyfilemanager-tekton/tinyfilemanager-tekton
+          image: typn1979/demo-app:v1
           volumeMounts:
-            - name: tinyfilemanager-data
+            - name: tinyfilemanager-tekton-data
               mountPath: /var/www/html/data      
           imagePullPolicy: Always
       restartPolicy: Always      
