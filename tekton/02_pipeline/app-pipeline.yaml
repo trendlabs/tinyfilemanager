@@ -18,9 +18,11 @@ spec:
   - name: deployment-name
     type: string
     description: for update task - name of the deployment to be patched
+    default: "tinyfilemanager-tekton"
   - name: git-url
     type: string
     description: the git repo for the code of deployment
+    default: "https://github.com/trendlabs/tinyfilemanager.git"
   - name: git-revision
     type: string
     description: revision to be used from repo of the code for deployment
@@ -28,6 +30,7 @@ spec:
   - name: IMAGE
     type: string
     description: image to be build from the code
+    default: "image-registry.openshift-image-registry.svc:5000/tinyfilemanager-tekton/tinyfilemanager-tekton"
   tasks:
   - name: fetch-repository
     taskRef:
