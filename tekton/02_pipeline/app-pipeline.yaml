@@ -5,15 +5,6 @@ metadata:
 spec:
   workspaces:
   - name: shared-workspace
-    volumeClaimTemplate:
-      metadata:
-        name: tinyfilemanager-tekton-data        
-      spec:
-        accessModes:
-          - ReadWriteOnce
-        resources:
-          requests:
-            storage: 2Gi
   params:
   - name: deployment-name
     type: string
