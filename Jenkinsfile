@@ -25,23 +25,24 @@ pipeline {
         }
 
         stage('Build image') {
-            
-            sh """
-                podman login --tls-verify=false -u thanhnq -p \$(oc whoami -t) ${REGISTRY_URL}
+            steps {
+                sh """
+                    podman login --tls-verify=false -u thanhnq -p \$(oc whoami -t) ${REGISTRY_URL}
 
-                podman build --tls-verify=false --squash -t ${REGISTRY_URL}/tinyfilemanager/tinyfilemanager -f ./Dockerfile
-            """
+                    podman build --tls-verify=false --squash -t ${REGISTRY_URL}/tinyfilemanager/tinyfilemanager -f ./Dockerfile
+                """
             
+            }
         }
 
         stage('Push image') {
-            
-            sh """
-                podman push --tls-verify=false ${REGISTRY_URL}/tinyfilemanager/tinyfilemanager:latest
+            steps {
+                sh """
+                    podman push --tls-verify=false ${REGISTRY_URL}/tinyfilemanager/tinyfilemanager:latest
 
-            """
-            
+                """
+                
+            }
         }
-
     }
 }
