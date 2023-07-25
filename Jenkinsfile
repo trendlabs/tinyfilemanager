@@ -9,7 +9,7 @@ pipeline {
     }
 
     environment {
-        REGISTRY_URL = "image-registry.openshift-image-registry.svc.cluster.local:5000",
+        REGISTRY_URL = "image-registry.openshift-image-registry.svc.cluster.local:5000"
         GIT_URL = "https://github.com/trendlabs/tinyfilemanager.git"
     }
 
