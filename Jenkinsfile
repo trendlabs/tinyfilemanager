@@ -14,6 +14,16 @@ pipeline {
     }
 
     stages {
+
+        stage('Cleanup Workspace') {
+            steps {
+                cleanWs()
+                sh """
+                echo "Cleaned Up Workspace"
+                """
+            }
+        }
+
         stage('Code Checkout') {
             steps {
                 checkout([
