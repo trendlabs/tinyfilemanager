@@ -15,15 +15,7 @@ pipeline {
 
     stages {
 
-        stage('Cleanup Workspace') {
-            steps {
-                cleanWs()
-                sh """
-                echo "Cleaned Up Workspace"
-                """
-            }
-        }
-
+    
         stage('Code Checkout') {
             steps {
                checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: ${GIT_URL}]])
