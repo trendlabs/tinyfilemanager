@@ -26,7 +26,7 @@ pipeline {
 
         stage('Code Checkout') {
             steps {
-               checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/trendlabs/tinyfilemanager.git']])
+               checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: ${GIT_URL}]])
             }
         }
 
