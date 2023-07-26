@@ -26,32 +26,30 @@ pipeline {
 
         stage('Code Checkout') {
             steps {
-                checkout([
-                    $class: 'GitSCM', 
-                    branches: [[name: '*/master']], 
-                    userRemoteConfigs: [[url: ${GIT_URL}]]
-                ])
+               checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/trendlabs/tinyfilemanager.git']])
             }
         }
 
         stage('Build image') {
             steps {
+                echo 'Start ---- Build image -----'
                 sh """
                     podman login --tls-verify=false -u thanhnq -p \$(oc whoami -t) ${REGISTRY_URL}
 
                     podman build --tls-verify=false --squash -t ${REGISTRY_URL}/tinyfilemanager/tinyfilemanager -f ./Dockerfile
                 """
-            
+                echo 'End ---- Build image -----'
             }
         }
 
         stage('Push image') {
             steps {
+                echo 'Start ---- Push image -----'
                 sh """
                     podman push --tls-verify=false ${REGISTRY_URL}/tinyfilemanager/tinyfilemanager:latest
 
                 """
-                
+                echo 'End ---- Build image -----'
             }
         }
     }
