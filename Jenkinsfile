@@ -26,9 +26,9 @@ pipeline {
             steps {
                 echo 'Start ---- Build image -----'
                 sh """
-                    podman login --tls-verify=false -u thanhnq -p \$(oc whoami -t) ${REGISTRY_URL}
+                    docker login --tls-verify=false -u thanhnq -p \$(oc whoami -t) ${REGISTRY_URL}
 
-                    podman build --tls-verify=false --squash -t ${REGISTRY_URL}/tinyfilemanager/tinyfilemanager -f ./Dockerfile
+                    docker build --tls-verify=false --squash -t ${REGISTRY_URL}/tinyfilemanager/tinyfilemanager -f ./Dockerfile
                 """
                 echo 'End ---- Build image -----'
             }
@@ -38,10 +38,10 @@ pipeline {
             steps {
                 echo 'Start ---- Push image -----'
                 sh """
-                    podman push --tls-verify=false ${REGISTRY_URL}/tinyfilemanager/tinyfilemanager:latest
+                    docker push --tls-verify=false ${REGISTRY_URL}/tinyfilemanager/tinyfilemanager:latest
 
                 """
-                echo 'End ---- Build image -----'
+                echo 'End ---- Push image -----'
             }
         }
     }
