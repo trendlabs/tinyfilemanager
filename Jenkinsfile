@@ -1,6 +1,5 @@
 pipeline {
     agent any
-    def app
     options {
         buildDiscarder logRotator( 
             daysToKeepStr: '15', 
@@ -25,7 +24,9 @@ pipeline {
         stage('Build image') {
             steps {
                 echo 'Start ---- Build image -----'
-                app = docker.build("${REGISTRY_URL}/tinyfilemanager/tinyfilemanager")
+                script {
+                    app = docker.build("${REGISTRY_URL}/tinyfilemanager/tinyfilemanager")
+                }
                 echo 'End ---- Build image -----'
             }
         }
@@ -33,9 +34,11 @@ pipeline {
         stage('Push image') {
             steps {
                 echo 'Start ---- Push image -----'
-                docker.withRegistry('${REGISTRY_URL}', 'ocp-credentials') {
-                    app.push("${env.BUILD_NUMBER}")
-                    app.push("latest")
+                script {
+                    docker.withRegistry('${REGISTRY_URL}', 'ocp-credentials') {
+                        app.push("${env.BUILD_NUMBER}")
+                        app.push("latest")
+                    }
                 }
                 echo 'End ---- Push image -----'
             }
