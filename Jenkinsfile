@@ -16,9 +16,9 @@ pipeline {
     stages {
 
     
-        stage('Code Checkout') {
+        stage('Clone from git') {
             steps {
-               checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: ${GIT_URL}]])
+               git ${GIT_URL}
             }
         }
 
