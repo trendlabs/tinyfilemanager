@@ -33,7 +33,7 @@ pipeline {
         stage('Push image') {
             steps {
                 echo 'Start ---- Push image -----'
-                docker.withRegistry('${REGISTRY_URL}', 'ocr-credentials') {
+                docker.withRegistry('${REGISTRY_URL}', 'ocp-credentials') {
                     app.push("${env.BUILD_NUMBER}")
                     app.push("latest")
                 }
