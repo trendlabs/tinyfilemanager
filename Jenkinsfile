@@ -1,6 +1,6 @@
 pipeline {
     agent any
-
+    def app
     options {
         buildDiscarder logRotator( 
             daysToKeepStr: '15', 
@@ -25,11 +25,7 @@ pipeline {
         stage('Build image') {
             steps {
                 echo 'Start ---- Build image -----'
-                sh """
-                    docker login --tls-verify=false -u thanhnq -p \$(oc whoami -t) ${REGISTRY_URL}
-
-                    docker build --tls-verify=false --squash -t ${REGISTRY_URL}/tinyfilemanager/tinyfilemanager -f ./Dockerfile
-                """
+                app = docker.build("${REGISTRY_URL}/tinyfilemanager/tinyfilemanager")
                 echo 'End ---- Build image -----'
             }
         }
@@ -37,10 +33,10 @@ pipeline {
         stage('Push image') {
             steps {
                 echo 'Start ---- Push image -----'
-                sh """
-                    docker push --tls-verify=false ${REGISTRY_URL}/tinyfilemanager/tinyfilemanager:latest
-
-                """
+                docker.withRegistry('${REGISTRY_URL}', 'ocr-credentials') {
+                    app.push("${env.BUILD_NUMBER}")
+                    app.push("latest")
+                }
                 echo 'End ---- Push image -----'
             }
         }
