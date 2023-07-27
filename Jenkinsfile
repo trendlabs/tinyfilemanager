@@ -18,7 +18,7 @@ pipeline {
     
         stage('Clone from git') {
             steps {
-               git ${GIT_URL}
+               git "${GIT_URL}"
             }
         }
 
